@@ -7,8 +7,8 @@ mailchimp.setConfig({
 });
 
 export async function POST(request: Request) {
-  try {
 
+  try {
     const { email } = await request.json();
 
     if (!email) {
@@ -16,14 +16,14 @@ export async function POST(request: Request) {
     }
 
     const res = await mailchimp.lists.addListMember(
-      process.env.MAILCHIMP_AUDIENCE_ID!,
+      process.env.MAILCHIMP_AUDIENCE_ID as string,
       { email_address: email, status: 'subscribed' }
     )
 
-    return NextResponse.json({ error: 'cette adresse email est déjà abonnée', status: 500, data: res });
+    return NextResponse.json({ message: "L'adresse email a été inscrite avec succès", data: res }, { status: 201 });
 
 
-  } catch (error) {
+  } catch (error) {   
     return NextResponse.json({ error: 'Error sending email' }, { status: 500 });
   }
 
